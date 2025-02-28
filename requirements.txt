@@ -1,0 +1,9 @@
+pytest
+black
+pylint
+uvicorn
+fastapi[standard]
+sqlalchemy
+pyyaml
+dependency-injector
+requests
