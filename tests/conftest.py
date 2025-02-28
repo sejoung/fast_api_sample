@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from sejoung.application import app
+from sejoung import app
 
 
 @pytest.fixture(scope="function", autouse=True)

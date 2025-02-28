@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from sejoung.controller.user import UserController
+from sejoung.controller import UserController
 
 
 def create_app():
