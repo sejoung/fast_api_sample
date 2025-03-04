@@ -7,3 +7,4 @@ sqlalchemy
 pyyaml
 dependency-injector
 requests
+testcontainers-mysql
