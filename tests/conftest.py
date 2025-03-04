@@ -23,5 +23,6 @@ def session():
         yield database.get_session
 
 
-def gen_id():
+@pytest.fixture(autouse=True)
+def generate_uuid():
     return uuid.uuid4()

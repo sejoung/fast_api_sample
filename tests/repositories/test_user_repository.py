@@ -1,10 +1,11 @@
 from sejoung.repositories.user_repository import UserRepository
 
 
-def test_user_repository(session):
+def test_user_repository(session, generate_uuid):
     repository = UserRepository(session)
-    actual = repository.find_one()
+    actual = repository.find_one(generate_uuid)
     assert actual is None
+
 
 def test_create_user(session):
     repository = UserRepository(session)
