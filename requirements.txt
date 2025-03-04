@@ -3,8 +3,7 @@ black
 pylint
 uvicorn
 fastapi[standard]
-sqlalchemy
+sqlmodel
 pyyaml
-dependency-injector
-requests
+httpx
 testcontainers-mysql

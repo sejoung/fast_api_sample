@@ -1,7 +1,7 @@
 from contextlib import AbstractContextManager
-from typing import Type, Callable
+from typing import Type, Callable, Sequence
 
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from sejoung.entities.user import User
 
@@ -12,12 +12,13 @@ class UserRepository:
 
     def find_one(self, user_id) -> Type[User] | None:
         with self.__session_factory() as session:
-            user = session.query(User).filter(User.id == user_id).one_or_none()
-            return user
+            statement = select(User).filter(User.id == user_id)
+            return session.exec(statement).one_or_none()
 
-    def find_all(self) -> list[Type[User]]:
+    def find_all(self) -> Sequence[User]:
         with self.__session_factory() as session:
-            return session.query(User).all()
+            statement = select(User)
+            return session.exec(statement).all()
 
     def create(self, user_id: str, name: str) -> User:
         with self.__session_factory() as session:
