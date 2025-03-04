@@ -19,7 +19,7 @@ class UserRepository:
         with self.__session_factory() as session:
             return session.query(User).all()
 
-    def create(self, user_id: str, name: str) -> Type[User]:
+    def create(self, user_id: str, name: str) -> User:
         with self.__session_factory() as session:
             user = User(user_id=user_id, name=name)
             session.add(user)

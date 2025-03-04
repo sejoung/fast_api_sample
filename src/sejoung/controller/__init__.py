@@ -1,3 +1,3 @@
-from .user import UserController
+from .user_controller import UserController
 
 __all__ = ["UserController"]

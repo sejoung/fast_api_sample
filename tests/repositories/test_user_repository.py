@@ -1,4 +1,4 @@
-from sejoung.repositories.user import UserRepository
+from sejoung.repositories.user_repository import UserRepository
 
 
 def test_user_repository(session):
