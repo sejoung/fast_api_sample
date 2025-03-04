@@ -26,7 +26,7 @@ class Database:
         Base.metadata.create_all(self._engine)
 
     @contextmanager
-    def session(self) -> Generator[Session, Any, None]:
+    def get_session(self) -> Generator[Session, Any, None]:
         session: Session = self._session_factory()
         try:
             yield session
