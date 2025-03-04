@@ -1,10 +1,7 @@
-import logging
 from contextlib import contextmanager
 from typing import Any, Generator
 
 from sqlmodel import SQLModel, create_engine, Session
-
-logger = logging.getLogger(__name__)
 
 
 class Database:
@@ -22,6 +19,6 @@ class Database:
                 yield session
         except Exception as e:
             session.rollback()
-            logger.error(e)
+            raise e
         finally:
             session.close()
