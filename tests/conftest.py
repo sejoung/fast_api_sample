@@ -1,3 +1,5 @@
+import uuid
+
 import pytest
 from fastapi.testclient import TestClient
 from testcontainers.mysql import MySqlContainer
@@ -19,3 +21,7 @@ def session():
         database = Database(db_url=con_url)
         database.create_database()
         yield database.get_session
+
+
+def gen_id():
+    return uuid.uuid4()

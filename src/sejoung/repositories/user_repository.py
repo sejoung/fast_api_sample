@@ -12,7 +12,7 @@ class UserRepository:
 
     def find_one(self, user_id) -> Type[User] | None:
         with self.__session_factory() as session:
-            statement = select(User).filter(User.id == user_id)
+            statement = select(User).where(User.id == user_id)
             return session.exec(statement).one_or_none()
 
     def find_all(self) -> Sequence[User]:
@@ -20,9 +20,9 @@ class UserRepository:
             statement = select(User)
             return session.exec(statement).all()
 
-    def create(self, user_id: str, name: str) -> User:
+    def create(self, __email: str, __name: str) -> User:
         with self.__session_factory() as session:
-            user = User(user_id=user_id, name=name)
+            user = User(email=__email, name=__name)
             session.add(user)
             session.commit()
             session.refresh(user)

@@ -1,4 +1,4 @@
-from typing import Optional
+import uuid
 
 from sqlmodel import SQLModel, Field
 
@@ -6,11 +6,11 @@ from sqlmodel import SQLModel, Field
 class User(SQLModel, table=True):
     __tablename__ = "users"
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    user_id: str
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     name: str
+    email: str
 
     def __repr__(self):
         return f"<User(id={self.id}, " \
-               f"user_id=\"{self.user_id}\", " \
+               f"email=\"{self.email}\", " \
                f"name=\"{self.name}\")>"
