@@ -8,7 +8,7 @@ class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(modules=["sejoung.application"])
 
     config = providers.Configuration(yaml_files=["config.yml"])
-
+    print("asdsad ",config.db.url)
     db = providers.Singleton(Database, db_url=config.db.url)
     user_repository = providers.Factory(
         UserRepository,
