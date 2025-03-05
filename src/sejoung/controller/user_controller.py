@@ -1,10 +1,10 @@
-import uuid
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
 from sejoung.configuration import log
-from sejoung.configuration.dependencies import get_user_service
+from sejoung.service.dependencies import get_user_service
 from sejoung.service.user_service import UserService
 
 
@@ -20,3 +20,8 @@ class UserController:
         log.debug(result)
         return {"message": "Hello World"}
 
+    async def get_user(self, user_id: UUID):
+        log.debug("Hello World")
+        result = await self.__user_service.get_user(user_id)
+        log.debug(result)
+        return result

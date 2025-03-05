@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 
-from sejoung.configuration.dependencies import get_user_service
 from sejoung.controller import UserController
+from sejoung.service.dependencies import get_user_service
 
 
 def create_app():

@@ -4,8 +4,8 @@ from typing import Annotated
 from fastapi import Depends
 
 from sejoung.configuration import log
-from sejoung.configuration.dependencies import get_user_repository
 from sejoung.exceptions.exceptions import UserNotFoundError
+from sejoung.repositories.dependencies import get_user_repository
 from sejoung.repositories.user_repository import UserRepository
 
 
