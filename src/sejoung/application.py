@@ -1,12 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
 
+from sejoung.configuration.dependencies import get_user_service
 from sejoung.controller import UserController
 
 
 def create_app():
     fastapi_app = FastAPI()
-    user_router = UserController().router
+    user_router = UserController(get_user_service()).router
     fastapi_app.include_router(user_router)
     return fastapi_app
 
