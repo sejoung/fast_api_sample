@@ -1,4 +1,5 @@
-from contextlib import AbstractContextManager
+import uuid
+from contextlib import AbstractAsyncContextManager
 from typing import Type, Callable, Sequence
 
 from sqlmodel import select
@@ -8,10 +9,10 @@ from sejoung.entities.user import User
 
 
 class UserRepository:
-    def __init__(self, session_factory: Callable[..., AbstractContextManager[AsyncSession]]):
+    def __init__(self, session_factory: Callable[..., AbstractAsyncContextManager[AsyncSession]]) -> None:
         self.__session_factory = session_factory
 
-    async def find_one(self, user_id) -> Type[User] | None:
+    async def find_one(self, user_id:uuid.UUID) -> Type[User] | None:
         async with self.__session_factory() as session:
             statement = select(User).where(User.id == user_id)
             response = await session.exec(statement)
