@@ -1,5 +1,8 @@
 # fast_api_sample
 
+```
+docker run --name mariadb-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mariadb
+```
 
 * 참고
 -----
