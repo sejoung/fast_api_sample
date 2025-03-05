@@ -2,11 +2,13 @@ import pytest
 
 from sejoung.repositories.user_repository import UserRepository
 
+
 @pytest.mark.asyncio
 async def test_user_repository(session, generate_uuid):
     repository = UserRepository(session)
     actual = await repository.find_one(generate_uuid)
     assert actual is None
+
 
 @pytest.mark.asyncio
 async def test_create_user(session):

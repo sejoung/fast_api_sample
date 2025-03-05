@@ -8,11 +8,13 @@ from testcontainers.mysql import MySqlContainer
 from sejoung import app
 from sejoung.configuration import Database, log
 
+
 @pytest.fixture(scope="session")
 def event_loop():
     loop = asyncio.new_event_loop()
     yield loop
     loop.close()
+
 
 @pytest.fixture(autouse=True)
 def client():
@@ -22,9 +24,10 @@ def client():
 @pytest.fixture(autouse=True)
 async def session():
     with  MySqlContainer("mariadb:10.5") as mariadb:
-        con_url = mariadb._create_connection_url(dialect="mysql+aiomysql", username=mariadb.MYSQL_USER,
+        con_url = mariadb._create_connection_url(dialect="mysql+aiomysql",
+                                                 username=mariadb.MYSQL_USER,
                                                  password=mariadb.MYSQL_PASSWORD,
-                                                 host=mariadb.get_container_host_ip(), db_name=mariadb.MYSQL_DATABASE,
+                                                 db_name=mariadb.MYSQL_DATABASE,
                                                  port=mariadb.port_to_expose)
         log.debug(con_url)
         database = Database(db_url=con_url)
