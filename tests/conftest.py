@@ -6,7 +6,7 @@ from httpx import AsyncClient, ASGITransport
 from testcontainers.mysql import MySqlContainer
 
 from sejoung import app
-from sejoung.configuration import log
+from sejoung.configuration import log, Database
 
 
 @pytest.fixture(scope="session")
