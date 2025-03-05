@@ -1,8 +1,8 @@
 import pytest
 
 from sejoung.exceptions.exceptions import UserNotFoundError
-from sejoung.repositories.user_repository import UserRepository
-from sejoung.service.user_service import UserService
+from sejoung.repositories import UserRepository
+from sejoung.service import UserService
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,6 @@
 import pytest
 
-from sejoung.repositories.user_repository import UserRepository
+from sejoung.repositories import UserRepository
 
 
 @pytest.mark.asyncio
