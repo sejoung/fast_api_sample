@@ -1,10 +1,10 @@
+import asyncio
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
-
 
 class Database:
 
@@ -27,4 +27,4 @@ class Database:
             await session.close()
 
     def __del__(self):
-        self.__engine.dispose()
+        asyncio.run(self.__engine.dispose())
