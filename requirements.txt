@@ -1,9 +1,12 @@
 pytest
+pytest-asyncio
 black
 pylint
 uvicorn
 fastapi[standard]
 sqlmodel
+aiomysql
+greenlet
 pyyaml
 httpx
 testcontainers-mysql

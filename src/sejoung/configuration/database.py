@@ -1,24 +1,30 @@
-from contextlib import contextmanager
-from typing import Any, Generator
+from contextlib import asynccontextmanager
+from typing import Any, AsyncGenerator
 
-from sqlmodel import SQLModel, create_engine, Session
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlmodel import SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 
 class Database:
 
     def __init__(self, db_url: str) -> None:
-        self.__engine = create_engine(db_url, echo=True)
+        self.__engine = create_async_engine(db_url, echo=True)
 
-    def create_database(self) -> None:
-        SQLModel.metadata.create_all(self.__engine)
+    async def create_database(self) -> None:
+        async with self.__engine.begin() as conn:
+            await conn.run_sync(SQLModel.metadata.create_all)
 
-    @contextmanager
-    def get_session(self) -> Generator[Session, Any, None]:
+    @asynccontextmanager
+    async def get_session(self) -> AsyncGenerator[AsyncSession, Any]:
         try:
-            with Session(self.__engine) as session:
+            async with AsyncSession(self.__engine) as session:
                 yield session
         except Exception as e:
-            session.rollback()
+            await session.rollback()
             raise e
         finally:
-            session.close()
+            await session.close()
+
+    def __del__(self):
+        self.__engine.dispose()
