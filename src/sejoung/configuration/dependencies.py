@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from sejoung.configuration import Database
+from .database import Database
 
 
 def get_database() -> Database:

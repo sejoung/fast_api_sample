@@ -1,7 +1,5 @@
-from __future__ import annotations
-
-from sejoung.configuration.dependencies import get_database
-from sejoung.repositories.user_repository import UserRepository
+from sejoung.configuration import get_database
+from .user_repository import UserRepository
 
 
 def get_user_repository() -> UserRepository:

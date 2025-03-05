@@ -4,8 +4,8 @@ from uuid import UUID
 from fastapi import APIRouter, Depends
 
 from sejoung.configuration import log
-from sejoung.service.dependencies import get_user_service
-from sejoung.service.user_service import UserService
+from sejoung.service import UserService
+from sejoung.service import get_user_service
 
 
 class UserController:

@@ -1,7 +1,5 @@
-from __future__ import annotations
-
-from sejoung.repositories.dependencies import get_user_repository
-from sejoung.service.user_service import UserService
+from sejoung.repositories import get_user_repository
+from .user_service import UserService
 
 
 def get_user_service() -> UserService:
