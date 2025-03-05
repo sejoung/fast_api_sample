@@ -6,9 +6,13 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from .logger import log
+
+
 class Database:
 
     def __init__(self, db_url: str) -> None:
+        log.debug("Creating database %s", db_url)
         self.__engine = create_async_engine(db_url, echo=True)
 
     async def create_database(self) -> None:
