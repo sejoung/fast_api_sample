@@ -1,3 +1,5 @@
+import os
+
 import uvicorn
 from fastapi import FastAPI
 
@@ -14,5 +16,6 @@ def create_app():
 
 
 if __name__ == "__main__":
+    os.environ["DATABASE_URL"] = "mysql+aiomysql://root:root@localhost:3306/test"
     app = create_app()
     uvicorn.run(app, host="0.0.0.0", port=8000)
