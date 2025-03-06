@@ -1,4 +1,3 @@
-import asyncio
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 
@@ -40,9 +39,7 @@ class Database:
             raise e
         finally:
             await session.close()
-
-    def __del__(self):
-        asyncio.run(self.__engine.dispose())
+            await self.__engine.dispose()
 
     async def dispose(self):
         await self.__engine.dispose()
