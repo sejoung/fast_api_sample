@@ -16,9 +16,10 @@ class Database:
         if db_url is None:
             raise ValueError("db_url is required")
         log.debug("db_url %s", db_url)
-        self.__engine = create_async_engine(db_url, echo=True, echo_pool=True,
-                                            pool_recycle=60,pool_size=5,
-                                            isolation_level="READ COMMITTED")
+        if Database.__instance is None:
+            self.__engine = create_async_engine(db_url, echo=True, echo_pool=True,
+                                                pool_recycle=60, pool_size=5,
+                                                isolation_level="READ COMMITTED")
 
     async def create_database(self) -> None:
         async with self.__engine.begin() as conn:
@@ -38,3 +39,9 @@ class Database:
 
     def __del__(self):
         asyncio.run(self.__engine.dispose())
+
+    @classmethod
+    def get_instance(cls, db_url: str) -> "Database":
+        if not cls.__instance:
+            cls.__instance = Database(db_url)
+        return cls.__instance
