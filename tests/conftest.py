@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 from testcontainers.mysql import MySqlContainer
 
 from sejoung.application import create_app
+from sejoung.configuration import log
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
@@ -21,6 +22,7 @@ def setup(request):
                                                      db_name=mariadb.MYSQL_DATABASE,
                                                      port=mariadb.port_to_expose)
         os.environ["DATABASE_URL"] = con_url
+        log.debug(f"Database URL: %s ",con_url)
         engine = create_engine(con_url, echo=True)
         yield engine
 
