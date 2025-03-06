@@ -22,3 +22,4 @@ class User(UserBase, table=True):
 class UserResponse(UserBase):
     name: str
     email: str
+    test: str = "test"

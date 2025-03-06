@@ -4,6 +4,7 @@ from typing import Annotated
 from fastapi import Depends
 
 from sejoung.configuration import log
+from sejoung.entities.user import UserResponse
 from sejoung.exceptions.exceptions import UserNotFoundError
 from sejoung.repositories import UserRepository
 from sejoung.repositories import get_user_repository
@@ -21,7 +22,7 @@ class UserService:
             log.debug("user_id %s not found", user_id)
             raise UserNotFoundError(user_id)
 
-        return result
+        return UserResponse.model_validate(result)
 
     async def get_users(self):
         results = await self.__user_repository.find_all()
@@ -29,4 +30,4 @@ class UserService:
             log.debug("No user found")
             return []
 
-        return results
+        return [UserResponse.model_validate(x) for x in results]
