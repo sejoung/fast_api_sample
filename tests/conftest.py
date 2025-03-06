@@ -12,25 +12,17 @@ from sejoung.application import create_app
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
-mariadb = MySqlContainer("mariadb:10.5")
-
 @pytest.fixture
 def setup(request):
-    mariadb.start()
-
-    def remove_container():
-        mariadb.stop()
-
-    request.addfinalizer(remove_container)
-    con_url = mariadb._create_connection_url(dialect=ASYNC_MYSQL_DIALECT,
-                                                 username=mariadb.MYSQL_USER,
-                                                 password=mariadb.MYSQL_PASSWORD,
-                                                 db_name=mariadb.MYSQL_DATABASE,
-                                                 port=mariadb.port_to_expose)
-    os.environ["DATABASE_URL"] = con_url
-    engine = create_engine(con_url, echo=True)
-
-    yield engine
+    with MySqlContainer("mariadb:10.5") as mariadb:
+        con_url = mariadb._create_connection_url(dialect=ASYNC_MYSQL_DIALECT,
+                                                     username=mariadb.MYSQL_USER,
+                                                     password=mariadb.MYSQL_PASSWORD,
+                                                     db_name=mariadb.MYSQL_DATABASE,
+                                                     port=mariadb.port_to_expose)
+        os.environ["DATABASE_URL"] = con_url
+        engine = create_engine(con_url, echo=True)
+        yield engine
 
 @pytest.fixture
 async def create_table(setup):

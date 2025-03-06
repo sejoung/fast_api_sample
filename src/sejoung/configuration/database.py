@@ -10,6 +10,7 @@ from .logger import log
 
 
 class Database:
+    __instance = None
 
     def __init__(self, db_url: str) -> None:
         if db_url is None:
