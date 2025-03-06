@@ -16,9 +16,11 @@ class UserService:
 
     async def get_user(self, user_id: uuid.UUID):
         result = await self.__user_repository.find_one(user_id)
+
         if result is None:
             log.debug("user_id %s not found", user_id)
             raise UserNotFoundError(user_id)
+
         return result
 
     async def get_users(self):
@@ -26,4 +28,5 @@ class UserService:
         if len(results) == 0:
             log.debug("No user found")
             return []
+
         return results

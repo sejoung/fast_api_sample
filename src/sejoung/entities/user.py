@@ -20,6 +20,5 @@ class User(UserBase, table=True):
 
 
 class UserResponse(UserBase):
-    id: uuid.UUID
     name: str
     email: str
