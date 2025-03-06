@@ -4,6 +4,25 @@
 docker run --name mariadb-container -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mariadb
 ```
 
+```
+brew install k6
+```
+
+```
+k6 run k6_test_scenario.js
+```
+
+mariadb 파라미터 확인
+
+```
+
+show variables like '%max_connect%';
+show variables like 'wait_timeout';
+set global max_connections=500;
+set wait_timeout=60;
+
+```
+
 * 참고
 -----
 
