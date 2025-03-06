@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import uuid
 
 import pytest
@@ -12,29 +11,9 @@ from sejoung.configuration import log, Database
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
-
-@pytest.fixture(scope="session")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
-
 @pytest.fixture
 def client():
     yield AsyncClient(transport=ASGITransport(app=app), base_url="http://localhost")
-
-
-@pytest.fixture
-def db_url():
-    with  MySqlContainer("mariadb:10.5") as mariadb:
-        db_url = mariadb._create_connection_url(dialect=ASYNC_MYSQL_DIALECT,
-                                                username=mariadb.MYSQL_USER,
-                                                password=mariadb.MYSQL_PASSWORD,
-                                                db_name=mariadb.MYSQL_DATABASE,
-                                                port=mariadb.port_to_expose)
-        log.debug("db_url %s", db_url)
-        return db_url
 
 
 @pytest.fixture
