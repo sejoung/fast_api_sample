@@ -18,10 +18,10 @@ class Database:
             db_url,
             echo=True,
             echo_pool=True,
-            pool_recycle=60,
+            pool_recycle=5,
             pool_size=1,
             max_overflow=5,
-            pool_timeout=50,
+            pool_timeout=5,
             isolation_level="READ COMMITTED",
         )
 
