@@ -5,11 +5,10 @@ import uuid
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-from sqlalchemy import create_engine
 from testcontainers.mysql import MySqlContainer
 
 from sejoung.application import create_app
-from sejoung.configuration import log
+from sejoung.configuration import log, Database
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
@@ -23,12 +22,13 @@ def setup(request):
                                                      port=mariadb.port_to_expose)
         os.environ["DATABASE_URL"] = con_url
         log.debug(f"Database URL: %s ",con_url)
-        engine = create_engine(con_url, echo=True)
-        yield engine
+        yield con_url
 
 @pytest.fixture
 async def create_table(setup):
-    pass
+    database = Database(setup)
+    await database.create_database()
+    await database.dispose()
 
 @pytest.fixture
 def app(create_table):

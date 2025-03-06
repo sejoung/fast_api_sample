@@ -33,7 +33,6 @@ class Database:
     @asynccontextmanager
     async def get_session(self) -> AsyncGenerator[AsyncSession, Any]:
         try:
-            await self.create_database()
             async with AsyncSession(self.__engine) as session:
                 yield session
         except Exception as e:
@@ -44,3 +43,6 @@ class Database:
 
     def __del__(self):
         asyncio.run(self.__engine.dispose())
+
+    async def dispose(self):
+        await self.__engine.dispose()
