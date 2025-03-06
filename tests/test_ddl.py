@@ -1,9 +1,9 @@
-import pytest
+import os
 
-from sejoung.configuration import Database
+from sejoung.configuration import log
 
-@pytest.mark.skip
-@pytest.mark.asyncio
-async def test_data():
-    db = Database("mysql+aiomysql://root:root@localhost:3306/test")
-    await db.create_database()
+
+def test_setup(setup):
+    url = os.getenv("DATABASE_URL")
+    log.debug("DATABASE_URL %s", url)
+    assert url is not None

@@ -3,4 +3,5 @@ from .user_repository import UserRepository
 
 
 def get_user_repository() -> UserRepository:
-    return UserRepository(get_database().get_session)
+    database = get_database()
+    return UserRepository(database.get_session)
