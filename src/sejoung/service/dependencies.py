@@ -1,5 +1,5 @@
-from sejoung.repositories import get_user_repository
 from .user_service import UserService
+from ..repositories.dependencies import get_user_repository
 
 
 def get_user_service() -> UserService:

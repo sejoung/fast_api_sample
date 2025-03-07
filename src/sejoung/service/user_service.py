@@ -7,7 +7,7 @@ from sejoung.configuration import log
 from sejoung.entities.user import UserResponse
 from sejoung.exceptions.exceptions import UserNotFoundError
 from sejoung.repositories import UserRepository
-from sejoung.repositories import get_user_repository
+from sejoung.repositories.dependencies import get_user_repository
 
 
 class UserService:

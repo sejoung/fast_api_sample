@@ -1,7 +1,6 @@
-from sejoung.configuration import get_database
 from .user_repository import UserRepository
+from ..configuration import Database
 
 
 def get_user_repository() -> UserRepository:
-    database = get_database()
-    return UserRepository(database.get_session)
+    return UserRepository(Database.get_instance().get_session)
