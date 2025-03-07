@@ -9,6 +9,7 @@ from testcontainers.mysql import MySqlContainer
 
 from sejoung.application import create_app
 from sejoung.configuration import log, Database
+from sejoung.configuration.dependencies import lifespan
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
@@ -26,13 +27,13 @@ def setup(request):
 
 @pytest.fixture
 async def create_table(setup):
-    database = Database(setup)
+    database = Database.get_instance()
     await database.create_database()
     await database.dispose()
 
 @pytest.fixture
 def app(create_table):
-    return create_app()
+    return create_app(lifespan=lifespan)
 
 @pytest.fixture
 def client(app):
@@ -42,4 +43,7 @@ def client(app):
 def generate_uuid():
     return uuid.uuid4()
 
-
+@pytest.fixture(autouse=True)
+def run_after_each_test():
+    yield
+    Database.remove_instance()

@@ -1,14 +1,16 @@
 import pytest
 
-from sejoung.repositories import get_user_repository
+from sejoung.repositories.dependencies import get_user_repository
 
 
 @pytest.mark.asyncio
-async def test_user_repository(app,generate_uuid):
+async def test_user_repository(app):
     repository = get_user_repository()
-    await repository.find_all()
-    actual = await repository.find_one(generate_uuid)
-    assert actual is None
+    user = await repository.create("zolla@abc.com", "aaa")
+    actual = await repository.find_one(user.id)
+    assert actual is not None
+    assert actual.email == "zolla@abc.com"
+    assert actual.name == "aaa"
 
 
 @pytest.mark.asyncio

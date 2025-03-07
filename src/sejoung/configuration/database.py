@@ -27,17 +27,6 @@ class Database:
             isolation_level="READ COMMITTED",
         )
 
-    @classmethod
-    def get_instance(cls) -> "Database":
-        if cls._INSTANCE is not None:
-            log.debug("Database instance already exists")
-            return cls._INSTANCE
-        else:
-            log.debug("Database instance exists")
-            db_url = os.getenv("DATABASE_URL")
-            cls._INSTANCE = Database(db_url)
-        return cls._INSTANCE
-
     async def create_database(self) -> None:
         async with self.__engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
@@ -55,4 +44,24 @@ class Database:
             await self.__engine.dispose()
 
     async def dispose(self):
+        log.debug("Database dispose")
         await self.__engine.dispose()
+
+    @classmethod
+    def get_instance(cls) -> "Database":
+        if cls._INSTANCE is not None:
+            log.debug("Database instance already exists")
+            return cls._INSTANCE
+        else:
+            log.debug("Database instance exists")
+            db_url = os.getenv("DATABASE_URL")
+            cls._INSTANCE = Database(db_url)
+        return cls._INSTANCE
+
+    @classmethod
+    def remove_instance(cls) -> None:
+        """
+            테쇼트 용도로 사용 하려고 만듬
+        """
+        cls._INSTANCE = None
+        log.debug("Database instance removed")
