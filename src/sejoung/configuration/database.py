@@ -20,10 +20,11 @@ class Database:
             db_url,
             echo=True,
             echo_pool=True,
-            pool_recycle=10,
+            pool_recycle=1000,
             pool_size=1,
             max_overflow=20,
-            pool_timeout=3600,
+            pool_timeout=10,
+            pool_pre_ping=True,
             isolation_level="READ COMMITTED",
         )
 
@@ -41,7 +42,6 @@ class Database:
             raise e
         finally:
             await session.close()
-            await self.__engine.dispose()
 
     async def dispose(self):
         log.debug("Database dispose")
