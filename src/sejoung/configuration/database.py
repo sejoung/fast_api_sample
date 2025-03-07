@@ -20,10 +20,10 @@ class Database:
             db_url,
             echo=True,
             echo_pool=True,
-            pool_recycle=1000,
+            pool_recycle=100,
             pool_size=1,
             max_overflow=20,
-            pool_timeout=10,
+            pool_timeout=30,
             pool_pre_ping=True,
             isolation_level="READ COMMITTED",
         )
