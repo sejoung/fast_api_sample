@@ -3,16 +3,25 @@ import os
 import uvicorn
 from fastapi import FastAPI
 
-from sejoung.configuration.dependencies import lifespan
-from sejoung.controller import UserController
+from sejoung.configuration.containers import Container
 
 
-def create_app(lifespan):
-    fastapi_app = FastAPI(lifespan=lifespan)
-    fastapi_app.include_router(UserController().user_router)
-    return fastapi_app
+class APPCreator:
+    def __init__(self):
+        self.__app = FastAPI()
+        self.__container = Container()
+
+    def get_app(self):
+        return self.__app
+
+    def get_container(self):
+        return self.__container
+
+    async def create_database(self):
+        await self.__container.db.provided.create_database()
+
 
 if __name__ == "__main__":
     os.environ["DATABASE_URL"] = "mysql+aiomysql://root:root@localhost:3306/test"
-    app = create_app(lifespan)
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    app = APPCreator()
+    uvicorn.run(app.get_app(), host="0.0.0.0", port=8000)

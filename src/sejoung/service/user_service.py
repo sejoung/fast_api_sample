@@ -1,18 +1,14 @@
 import uuid
-from typing import Annotated
-
-from fastapi import Depends
 
 from sejoung.configuration import log
 from sejoung.entities.user import UserResponse
 from sejoung.exceptions.exceptions import UserNotFoundError
 from sejoung.repositories import UserRepository
-from sejoung.repositories.dependencies import get_user_repository
 
 
 class UserService:
 
-    def __init__(self, user_repository: Annotated[UserRepository, Depends(get_user_repository)]):
+    def __init__(self, user_repository: UserRepository):
         self.__user_repository = user_repository
 
     async def get_user(self, user_id: uuid.UUID):

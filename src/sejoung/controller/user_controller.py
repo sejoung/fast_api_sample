@@ -1,16 +1,15 @@
-from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from sejoung.configuration import log
 from sejoung.entities.user import UserResponse
 from sejoung.service import UserService
-from sejoung.service.dependencies import get_user_service
 
 
 class UserController:
-    def __init__(self):
+    def __init__(self, user_service: UserService):
+        self.__user_service = user_service
         self.user_router = APIRouter(prefix="/users", tags=["Users"])
         self.user_router.add_api_route(
             "/", self.get_users, methods=["GET"], response_model=list[UserResponse]
@@ -19,19 +18,13 @@ class UserController:
             "/{user_id}", self.get_user, methods=["GET"], response_model=UserResponse
         )
 
-    async def get_users(
-        self, user_service: Annotated[UserService, Depends(get_user_service)]
-    ):
+    async def get_users(self):
         log.debug("retrieving all users")
-        result = await user_service.get_users()
+        result = await  self.__user_service.get_users()
         log.debug(result)
         return result
 
-    async def get_user(
-        self,
-        user_id: str,
-        user_service: Annotated[UserService, Depends(get_user_service)],
-    ):
-        result = await user_service.get_user(UUID(user_id))
+    async def get_user(self, user_id: str):
+        result = await  self.__user_service.get_user(UUID(user_id))
         log.debug(result)
         return result
