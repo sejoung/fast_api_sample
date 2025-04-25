@@ -22,7 +22,7 @@ def setup(request):
                                                  db_name=mariadb.MYSQL_DATABASE,
                                                  port=mariadb.port_to_expose)
         os.environ["DATABASE_URL"] = con_url
-        log.debug(f"Database URL: %s ", con_url)
+        log.debug("Database URL: %s ", con_url)
         yield con_url
 
 
@@ -33,8 +33,7 @@ def app(setup):
 
 
 @pytest.fixture
-async def client(app):
-    await app.create_database()
+def client(app):
     yield AsyncClient(transport=ASGITransport(app=app.get_app()), base_url="http://localhost")
 
 

@@ -17,9 +17,6 @@ class APPCreator:
     def get_container(self):
         return self.__container
 
-    async def create_database(self):
-        await self.__container.db.provided.create_database()
-
 
 if __name__ == "__main__":
     os.environ["DATABASE_URL"] = "mysql+aiomysql://root:root@localhost:3306/test"

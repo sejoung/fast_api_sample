@@ -2,6 +2,7 @@ import os
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
 
+from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -16,6 +17,7 @@ class Database:
         if db_url is None:
             raise ValueError("db_url is required")
         log.debug("db_url %s", db_url)
+        self.__db_url = db_url
         self.__engine = create_async_engine(
             db_url,
             echo=True,
@@ -28,9 +30,11 @@ class Database:
             isolation_level="READ COMMITTED",
         )
 
-    async def create_database(self) -> None:
-        async with self.__engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.create_all)
+    def create_database(self) -> None:
+        log.debug("Database create")
+        url = self.__db_url.replace("mysql+aiomysql", "mysql+pymysql")
+        engine = create_engine(url)
+        SQLModel.metadata.create_all(engine)
 
     @asynccontextmanager
     async def session(self) -> AsyncGenerator[AsyncSession, Any]:
