@@ -4,6 +4,7 @@ import os
 import uuid
 
 import pytest
+from _pytest.fixtures import FixtureLookupError
 from httpx import AsyncClient, ASGITransport
 from testcontainers.mysql import MySqlContainer
 
@@ -32,6 +33,26 @@ async def app(setup):
     app.get_container().database().create_database()
     yield app
     await app.get_container().database().close()
+
+
+@pytest.fixture(autouse=True)
+def inject_components(app, request) -> None:
+    test_container = app.get_container()
+    item = request._pyfuncitem  # noqa
+    fixture_names = getattr(item, "fixturenames", request.fixturenames)
+    for arg_name in fixture_names:
+        try:
+            request.getfixturevalue(arg_name)
+        except FixtureLookupError as e:
+            if arg_name == "inject_components":
+                continue
+            provided = test_container
+            for seg in arg_name.split("__"):
+                try:
+                    provided = getattr(provided, seg)()
+                except AttributeError:
+                    raise e
+            item.funcargs[arg_name] = provided
 
 
 @pytest.fixture
