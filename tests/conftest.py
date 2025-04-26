@@ -27,9 +27,11 @@ def setup(request):
 
 
 @pytest.fixture
-def app(setup):
+async def app(setup):
     app = APPCreator()
-    return app
+    app.get_container().database().create_database()
+    yield app
+    await app.get_container().database().close()
 
 
 @pytest.fixture

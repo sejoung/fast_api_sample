@@ -31,10 +31,10 @@ class Database:
         )
 
     def create_database(self) -> None:
-        log.debug("Database create")
         url = self.__db_url.replace("mysql+aiomysql", "mysql+pymysql")
-        engine = create_engine(url)
+        engine = create_engine(url, echo=True)
         SQLModel.metadata.create_all(engine)
+        engine.dispose()
 
     @asynccontextmanager
     async def session(self) -> AsyncGenerator[AsyncSession, Any]:
@@ -47,6 +47,6 @@ class Database:
         finally:
             await session.close()
 
-    async def dispose(self):
+    async def close(self):
         log.debug("Database dispose")
         await self.__engine.dispose()
