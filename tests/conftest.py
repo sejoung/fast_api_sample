@@ -13,7 +13,7 @@ from sejoung.configuration import log
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def setup(request):
     with MySqlContainer("mariadb:10.5") as mariadb:
         con_url = mariadb._create_connection_url(dialect=ASYNC_MYSQL_DIALECT,
