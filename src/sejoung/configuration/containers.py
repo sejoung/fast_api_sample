@@ -10,7 +10,7 @@ class Container(containers.DeclarativeContainer):
     wiring_config = containers.WiringConfiguration(
         packages=["sejoung"]
     )
-    database = providers.Resource(Database)
+    database = providers.Singleton(Database)
     user_repository: UserRepository = providers.Factory(UserRepository, database.provided.session)
     user_service: UserService = providers.Factory(UserService, user_repository=user_repository)
     user_controller: UserController = providers.Factory(UserController, user_service=user_service)
