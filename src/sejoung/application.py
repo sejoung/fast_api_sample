@@ -22,5 +22,5 @@ class APPCreator:
 if __name__ == "__main__":
     os.environ["DATABASE_URL"] = "mysql+aiomysql://root:root@localhost:3306/test"
     app = APPCreator()
+    app.get_container().database().create_database()
     uvicorn.run(app.get_app(), host="0.0.0.0", port=8000)
-    
