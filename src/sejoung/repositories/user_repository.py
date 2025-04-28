@@ -17,6 +17,7 @@ class UserRepository:
 
     async def find_one(self, user_id: uuid.UUID) -> Type[User] | None:
         async with self.__session_factory() as session:
+            self.__log.debug(f"Finding user with id: {user_id}")
             statement = select(User).where(User.id == user_id)
             response = await session.exec(statement)
             return response.first()
