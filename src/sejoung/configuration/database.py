@@ -1,3 +1,4 @@
+import logging
 import os
 from contextlib import asynccontextmanager
 from typing import Any, AsyncGenerator
@@ -7,16 +8,15 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
-from .logger import log
-
 
 class Database:
 
-    def __init__(self) -> None:
+    def __init__(self, logger: logging.Logger) -> None:
+        self.__log = logger
         db_url = os.getenv("DATABASE_URL")
         if db_url is None:
             raise ValueError("db_url is required")
-        log.debug("db_url %s", db_url)
+        self.__log.debug("db_url %s", db_url)
         self.__db_url = db_url
         self.__engine = create_async_engine(
             db_url,
@@ -48,5 +48,5 @@ class Database:
             await session.close()
 
     async def close(self):
-        log.debug("Database dispose")
+        self.__log.debug("Database dispose")
         await self.__engine.dispose()

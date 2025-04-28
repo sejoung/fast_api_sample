@@ -9,7 +9,6 @@ from httpx import AsyncClient, ASGITransport
 from testcontainers.mysql import MySqlContainer
 
 from sejoung.application import APPCreator
-from sejoung.configuration import log
 
 ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 
@@ -23,7 +22,6 @@ def setup(request):
                                                  db_name=mariadb.MYSQL_DATABASE,
                                                  port=mariadb.port_to_expose)
         os.environ["DATABASE_URL"] = con_url
-        log.debug("Database URL: %s ", con_url)
         yield con_url
 
 
