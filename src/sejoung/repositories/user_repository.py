@@ -32,6 +32,5 @@ class UserRepository:
         async with self.__session_factory() as session:
             user = User(email=__email, name=__name)
             session.add(user)
-            await session.commit()
-            await session.refresh(user)
+            await session.flush()
             return user
