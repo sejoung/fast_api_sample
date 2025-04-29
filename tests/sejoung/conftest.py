@@ -16,6 +16,7 @@ ASYNC_MYSQL_DIALECT = "mysql+aiomysql"
 @pytest.fixture(scope="session")
 def setup(request):
     with MySqlContainer("mariadb:10.5") as mariadb:
+        os.environ["IS_TEST"] = "true"
         con_url = mariadb._create_connection_url(dialect=ASYNC_MYSQL_DIALECT,
                                                  username=mariadb.MYSQL_USER,
                                                  password=mariadb.MYSQL_PASSWORD,

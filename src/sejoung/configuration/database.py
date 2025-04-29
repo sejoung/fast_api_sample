@@ -60,18 +60,15 @@ class AsyncDatabase:
     async def session(self) -> AsyncGenerator[AsyncSession, Any]:
         async with self._session_factory() as session:
             try:
-                async with session.begin() as transaction:
-                    self.__log.debug("Session started")
-                    self.__log.debug("Session ID: %s", id(session))
-                    yield session
-                    await transaction.commit()
+                yield session
+                if self._is_test == "false":
+                    await session.commit()
+
             except Exception as e:
-                self.__log.exception("Session error occurred, rolling back...")
                 await session.rollback()
                 raise e
             finally:
                 await session.close()
 
     async def close(self) -> None:
-        self.__log.debug("Disposing database engine...")
         await self._engine.dispose()
